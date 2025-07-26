@@ -1,0 +1,16 @@
+{
+  "name": "77525bueno",
+  "version": "1.0.0",
+  "description": "\"Mi primer servidor\"",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon ./src/app.js"
+  },
+  "author": "\"Omar Bueno\"",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}

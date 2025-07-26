@@ -1,0 +1,67 @@
+[
+  {
+    "id": "1753506860110",
+    "title": "Figura decorativa Pikachu 3D",
+    "description": "Figura coleccionable de Pikachu impresa en resina UV con gran detalle.",
+    "code": "PIKA3D002",
+    "price": 120,
+    "status": true,
+    "stock": 6,
+    "category": "figuras",
+    "thumbnails": [
+      "img/pikachu3d.jpg"
+    ]
+  },
+  {
+    "id": "1753506951371",
+    "title": "Base soporte para control PS5",
+    "description": "Soporte impreso en PLA para mantener tu control de PS5 en posición vertical.",
+    "code": "PS5BASE001",
+    "price": 80,
+    "status": true,
+    "stock": 12,
+    "category": "accesorios",
+    "thumbnails": [
+      "img/soporte_ps5.jpg"
+    ]
+  },
+  {
+    "id": "1753506962239",
+    "title": "Set de ajedrez impreso 3D",
+    "description": "Tablero y piezas de ajedrez impresas en PLA con diseño moderno.",
+    "code": "AJEDREZ3D003",
+    "price": 250,
+    "status": true,
+    "stock": 3,
+    "category": "juegos",
+    "thumbnails": [
+      "img/ajedrez3d.jpg"
+    ]
+  },
+  {
+    "id": "1753506970877",
+    "title": "Porta lápices geométrico",
+    "description": "Diseño artístico en forma geométrica, ideal para escritorios.",
+    "code": "PORTALAP004",
+    "price": 60,
+    "status": true,
+    "stock": 20,
+    "category": "oficina",
+    "thumbnails": [
+      "img/portalapices.jpg"
+    ]
+  },
+  {
+    "id": "1753506979156",
+    "title": "Llavero personalizado 3D",
+    "description": "Llavero con nombre o diseño a elección, impreso en TPU flexible.",
+    "code": "LLAVERO3D005",
+    "price": 30,
+    "status": true,
+    "stock": 50,
+    "category": "personalizados",
+    "thumbnails": [
+      "img/llavero3d.jpg"
+    ]
+  }
+]
