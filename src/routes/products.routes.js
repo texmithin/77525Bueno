@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import ProductManager from '../managers/ProductManager.js';
+import { io } from '../app.js';
 
 const router = Router();
 const manager = new ProductManager();
@@ -18,9 +19,13 @@ router.get('/:pid', async (req, res) => {
 
 // POST /
 router.post('/', async (req, res) => {
-    console.log('BODY RECIBIDO:', req.body);
   const { title, description, code, price, status = true, stock, category, thumbnails } = req.body;
+
   const newProduct = await manager.addProduct({ title, description, code, price, status, stock, category, thumbnails });
+
+  const updatedProducts = await manager.getProducts();
+  io.emit('updateProducts', updatedProducts);
+
   res.status(201).json(newProduct);
 });
 
@@ -33,6 +38,10 @@ router.put('/:pid', async (req, res) => {
 // DELETE /:pid
 router.delete('/:pid', async (req, res) => {
   await manager.deleteProduct(req.params.pid);
+
+  const updatedProducts = await manager.getProducts();
+  io.emit('updateProducts', updatedProducts);
+
   res.json({ message: 'Producto eliminado' });
 });
 
