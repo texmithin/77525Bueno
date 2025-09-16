@@ -7,6 +7,7 @@ const cartSchema = new mongoose.Schema({
       quantity: { type: Number, default: 1 }
     }
   ]
-}, { timestamps: true });
+});
 
 export const Cart = mongoose.model('Cart', cartSchema);
+

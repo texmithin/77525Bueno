@@ -6,11 +6,12 @@ const productSchema = new mongoose.Schema({
   description: String,
   price: { type: Number, required: true },
   category: String,
-  thumbnail: String,
-  code: { type: String, unique: true },
-  stock: Number,
-  status: { type: Boolean, default: true }
-}, { timestamps: true });
+  code: { type: String, required: true, unique: true },
+  stock: { type: Number, required: true },
+  status: { type: Boolean, default: true },
+  thumbnails: [String]
+});
+
 
 productSchema.plugin(mongoosePaginate);
 

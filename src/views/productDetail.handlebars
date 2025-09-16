@@ -1,22 +1,49 @@
-<h1 class="text-center mb-4">{{product.title}}</h1>
+<nav class="row" style="margin-bottom:14px;">
+  <a class="btn ghost" href="/products">← Volver</a>
+</nav>
 
-<div class="card mx-auto" style="max-width: 500px;">
-  <div class="card-body">
-    <h5 class="card-title">{{product.title}}</h5>
-    <p class="card-text"><strong>Descripción:</strong> {{product.description}}</p>
-    <p class="card-text"><strong>Precio:</strong> ${{product.price}}</p>
-    <p class="card-text"><strong>Categoría:</strong> {{product.category}}</p>
-    <p class="card-text"><strong>Stock:</strong> {{product.stock}}</p>
-    <button class="btn btn-success">Agregar al carrito</button>
+<section class="hero">
+  <div>
+    {{#if product.thumbnails}}
+      {{#if product.thumbnails.length}}
+        <img src="{{product.thumbnails.[0]}}" alt="{{product.title}}" />
+        <div class="thumbs">
+          {{#each product.thumbnails}}
+            <img src="{{this}}" alt="thumb {{@index}}" />
+          {{/each}}
+        </div>
+      {{else}}
+        <img src="https://dummyimage.com/800x600/0b0c10/7c5cff&text=Producto" alt="{{product.title}}" />
+      {{/if}}
+    {{else}}
+      <img src="https://dummyimage.com/800x600/0b0c10/7c5cff&text=Producto" alt="{{product.title}}" />
+    {{/if}}
   </div>
-</div>
 
-<h2>{{product.title}}</h2>
-<p><strong>Precio:</strong> ${{product.price}}</p>
-<p><strong>Categoría:</strong> {{product.category}}</p>
-<p><strong>Descripción:</strong> {{product.description}}</p>
+  <article class="card">
+    <h1 style="margin:0 0 6px 0;">{{product.title}}</h1>
+    <p class="muted" style="margin:0 0 12px 0;">
+      <span class="badge">{{product.category}}</span>
+      &nbsp;•&nbsp; {{#if product.status}}Disponible{{else}}No disponible{{/if}}
+      {{#if product.stock}} &nbsp;•&nbsp; Stock: {{product.stock}} {{/if}}
+    </p>
 
-<!-- Botón para agregar al carrito -->
-<form action="/api/carts/64e12345678abcdef1234567/product/{{product._id}}" method="POST">
-  <button type="submit" class="btn btn-success">Agregar al carrito</button>
-</form>
+    <p class="price" style="margin:0 0 14px 0;">${{product.price}}</p>
+
+    {{#if product.description}}
+      <p style="line-height:1.5; margin-bottom:16px;">{{product.description}}</p>
+    {{/if}}
+
+    <div class="row qty" style="margin-bottom:12px;">
+      <label for="qty">Cantidad</label>
+      <input id="qty" type="number" min="1" value="1" />
+    </div>
+
+    <div class="row">
+      <button class="btn add-to-cart" data-id="{{product._id}}">Agregar al carrito</button>
+      <a class="btn secondary" href="/carts/{{cartId}}">Ver carrito</a>
+    </div>
+  </article>
+</section>
+
+

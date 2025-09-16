@@ -1,0 +1,59 @@
+<h1 style="margin-bottom:8px;">Productos</h1>
+<p class="muted" style="margin-top:0;">Filtra por <span class="badge">category:Alimentos</span> o <span class="badge">status:true</span>, y ordena por precio.</p>
+
+<form class="row" method="get" action="/products" style="margin:14px 0 20px;">
+  <label>Query:
+    <input type="text" name="query" value="{{query}}" placeholder="category:Bebidas o status:true" />
+  </label>
+  <label>Sort:
+    <select name="sort">
+      <option value="">(ninguno)</option>
+      <option value="asc" {{#if sort}}{{#if (equalStr sort "asc")}}selected{{/if}}{{/if}}>precio ↑</option>
+      <option value="desc" {{#if sort}}{{#if (equalStr sort "desc")}}selected{{/if}}{{/if}}>precio ↓</option>
+    </select>
+  </label>
+  <label>Limit:
+    <input type="number" name="limit" min="1" value="10" />
+  </label>
+  <button class="btn" type="submit">Aplicar</button>
+</form>
+
+<div class="grid">
+  {{#each products}}
+    <article class="card">
+      <div class="row" style="justify-content:space-between;">
+        <h3 style="margin:0">{{this.title}}</h3>
+        <span class="badge">{{this.category}}</span>
+      </div>
+      <p class="muted" style="margin:6px 0 0;">{{#if this.status}}Disponible{{else}}No disponible{{/if}}</p>
+      <p class="price" style="margin:10px 0 12px;">${{this.price}}</p>
+
+      {{#if this.thumbnails}}
+        {{#if this.thumbnails.length}}
+          <div class="thumbs">
+            {{#each this.thumbnails}}
+              <img src="{{this}}" alt="thumb {{@index}}" />
+            {{/each}}
+          </div>
+        {{/if}}
+      {{/if}}
+
+      <div class="row" style="margin-top:12px;">
+        <a class="btn secondary" href="/products/{{this._id}}">Ver detalles</a>
+        <button class="btn add-to-cart" data-id="{{this._id}}">Agregar al carrito</button>
+      </div>
+    </article>
+  {{/each}}
+</div>
+
+<div class="pagination" style="margin-top:18px;">
+  {{#if pagination.hasPrevPage}}
+    <a class="pill" href="{{pagination.prevLink}}">← Página {{pagination.prevPage}}</a>
+  {{/if}}
+  <span class="pill">Página {{pagination.page}} / {{pagination.totalPages}}</span>
+  {{#if pagination.hasNextPage}}
+    <a class="pill" href="{{pagination.nextLink}}">Página {{pagination.nextPage}} →</a>
+  {{/if}}
+</div>
+
+

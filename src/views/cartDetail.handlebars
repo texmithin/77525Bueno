@@ -1,0 +1,32 @@
+<h1>Carrito de Compras</h1>
+
+{{#if items.length}}
+  <div class="card">
+    {{#each items}}
+      <div class="row" style="justify-content:space-between; margin-bottom:8px;">
+        <div><strong>{{this.title}}</strong> — ${{this.price}} × {{this.quantity}}</div>
+        <div>${{this.subtotal}}</div>
+      </div>
+    {{/each}}
+  </div>
+
+  <h2 style="margin-top:14px;">Total: ${{total}}</h2>
+
+  <div class="row" style="margin-top:10px;">
+    <button class="btn" id="empty-cart">Vaciar carrito</button>
+  </div>
+{{else}}
+  <p class="muted">No hay productos en este carrito.</p>
+{{/if}}
+
+<p style="margin-top:16px;"><a href="/products">← Seguir comprando</a></p>
+
+<script>
+  document.getElementById('empty-cart')?.addEventListener('click', async () => {
+    const res = await fetch('/api/carts/{{cartId}}', { method: 'DELETE' });
+    if (res.ok) location.reload();
+  });
+</script>
+
+
+
