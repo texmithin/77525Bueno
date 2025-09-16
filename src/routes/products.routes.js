@@ -1,48 +1,67 @@
 import { Router } from 'express';
-import ProductManager from '../managers/ProductManager.js';
-import { io } from '../app.js';
+import { ProductManagerDB } from '../dao/ProductManagerDB.js';
 
+const productManager = new ProductManagerDB();
 const router = Router();
-const manager = new ProductManager();
+const manager = new ProductManagerDB();
 
-// GET /
+// GET paginado con filtros y ordenamiento
 router.get('/', async (req, res) => {
-  const products = await manager.getProducts();
-  res.json(products);
-});
+  try {
+    const {
+      limit = 10,
+      page = 1,
+      sort,
+      query
+    } = req.query;
 
-// GET /:pid
-router.get('/:pid', async (req, res) => {
-  const product = await manager.getProductById(req.params.pid);
-  product ? res.json(product) : res.status(404).json({ error: 'Producto no encontrado' });
-});
+    const filter = {};
 
-// POST /
-router.post('/', async (req, res) => {
-  const { title, description, code, price, status = true, stock, category, thumbnails } = req.body;
+    // Filtro por disponibilidad
+    if (query === 'disponibles') {
+      filter.stock = { $gt: 0 };
+    } else if (query === 'agotados') {
+      filter.stock = { $lte: 0 };
+    } else if (query) {
+      // Filtro por categoría
+      filter.category = query;
+    }
 
-  const newProduct = await manager.addProduct({ title, description, code, price, status, stock, category, thumbnails });
+    const sortOption = {};
+    if (sort === 'asc') {
+      sortOption.price = 1;
+    } else if (sort === 'desc') {
+      sortOption.price = -1;
+    }
 
-  const updatedProducts = await manager.getProducts();
-  io.emit('updateProducts', updatedProducts);
+    const options = {
+      limit: parseInt(limit),
+      page: parseInt(page),
+      sort: sortOption
+    };
 
-  res.status(201).json(newProduct);
-});
+    const result = await manager.paginateProducts(filter, options);
 
-// PUT /:pid
-router.put('/:pid', async (req, res) => {
-  const updated = await manager.updateProduct(req.params.pid, req.body);
-  updated ? res.json(updated) : res.status(404).json({ error: 'Producto no encontrado' });
-});
+    // Armado de links
+    const baseUrl = `${req.protocol}://${req.get('host')}${req.path}`;
+    const createLink = (pageNum) => `${baseUrl}?page=${pageNum}&limit=${limit}${query ? `&query=${query}` : ''}${sort ? `&sort=${sort}` : ''}`;
 
-// DELETE /:pid
-router.delete('/:pid', async (req, res) => {
-  await manager.deleteProduct(req.params.pid);
+    res.json({
+      status: 'success',
+      payload: result.docs,
+      totalPages: result.totalPages,
+      prevPage: result.prevPage,
+      nextPage: result.nextPage,
+      page: result.page,
+      hasPrevPage: result.hasPrevPage,
+      hasNextPage: result.hasNextPage,
+      prevLink: result.hasPrevPage ? createLink(result.prevPage) : null,
+      nextLink: result.hasNextPage ? createLink(result.nextPage) : null
+    });
 
-  const updatedProducts = await manager.getProducts();
-  io.emit('updateProducts', updatedProducts);
-
-  res.json({ message: 'Producto eliminado' });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
 });
 
 export default router;

@@ -1,0 +1,29 @@
+<h1 class="text-center mb-4">Productos</h1>
+
+<div class="row">
+  {{#each products}}
+    <div class="col-md-4">
+      <div class="product-card">
+        <h5>{{this.title}}</h5>
+        <p>{{this.description}}</p>
+        <p><strong>Precio:</strong> ${{this.price}}</p>
+        <p><strong>Categoría:</strong> {{this.category}}</p>
+        <p><strong>Stock:</strong> {{this.stock}}</p>
+        <button class="btn btn-sm btn-primary">Agregar al carrito</button>
+      </div>
+    </div>
+  {{/each}}
+</div>
+
+<!-- Paginación -->
+<nav class="mt-4 text-center">
+  {{#if pagination.hasPrevPage}}
+    <a href="/products?page={{pagination.prevPage}}&limit=10{{#if pagination.sort}}&sort={{pagination.sort}}{{/if}}{{#if pagination.query}}&query={{pagination.query}}{{/if}}" class="btn btn-outline-primary">Anterior</a>
+  {{/if}}
+
+  <span class="mx-2">Página {{pagination.page}} de {{pagination.totalPages}}</span>
+
+  {{#if pagination.hasNextPage}}
+    <a href="/products?page={{pagination.nextPage}}&limit=10{{#if pagination.sort}}&sort={{pagination.sort}}{{/if}}{{#if pagination.query}}&query={{pagination.query}}{{/if}}" class="btn btn-outline-primary">Siguiente</a>
+  {{/if}}
+</nav>
